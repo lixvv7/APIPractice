@@ -28,7 +28,7 @@ public class CurrentWeatherStepDef {
 //
     @When("User sends latitude as {int} and longitude as {int} to the request")
     public void userSendsLatitudeAsAndLongitudeAsToTheRequest(int latitude, int longitude) {
-        RestAssured.baseURI  =  Constants.BASEURL;
+        RestAssured.baseURI  =  Constants.WEATHER_BASEURL;
         request  =  RestAssured.given().queryParam("lat",latitude).queryParam("lon",longitude).queryParam("appid",apiKey);
         response = request.get("/weather");
         System.out.println(response.body().asString());
