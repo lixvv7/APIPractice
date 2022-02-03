@@ -17,14 +17,17 @@ public class CurrentWeatherStepDef {
     String lang;
     RequestSpecification request;
     private  static Response response;
-    @Given("User has valid API key")
-    public void userHasValidAPIKey() {
+    @Given("User has {string} API key")
+    public void userHasValidAPIKey(String keyType) {
+        if(keyType.equalsIgnoreCase("valid"))
         apiKey= Constants.API_KEY;
+        else
+            apiKey="invalid";
     }
 
 //
     @When("User sends latitude as {int} and longitude as {int} to the request")
-    public void userSendsLatitudeAsAndLongitudeAsToTheRequest(int latitude, int longitude) throws Exception {
+    public void userSendsLatitudeAsAndLongitudeAsToTheRequest(int latitude, int longitude) {
         RestAssured.baseURI  =  Constants.BASEURL;
         request  =  RestAssured.given().queryParam("lat",latitude).queryParam("lon",longitude).queryParam("appid",apiKey);
         response = request.get("/weather");
@@ -45,5 +48,10 @@ public class CurrentWeatherStepDef {
         String resp = response.asString();
         JsonPath js = new JsonPath(resp);
         return js.get(key).toString();
+    }
+
+    @And("The response message contains {string}")
+    public void theResponseMessageContains(String respMessage) {
+        Assert.assertTrue(getJsonPath(response,"message").contains(respMessage));
     }
 }
