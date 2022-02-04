@@ -54,4 +54,5 @@ public class CurrentWeatherStepDef {
     public void theResponseMessageContains(String respMessage) {
         Assert.assertTrue(getJsonPath(response,"message").contains(respMessage));
     }
+
 }
